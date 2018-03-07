@@ -1,6 +1,7 @@
 package com.example.vinhphuc.udacitysunshine;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -58,8 +59,9 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapterOn
     @Override
     public void onClick(String weatherForDay) {
         Context context = this;
-        Toast.makeText(context, weatherForDay, Toast.LENGTH_SHORT)
-                .show();
+        Class destinationClass = DetailActivity.class;
+        Intent intentToStartDetailActivity = new Intent(context, destinationClass);
+        startActivity(intentToStartDetailActivity);
     }
 
     private void showWeatherDataView() {
