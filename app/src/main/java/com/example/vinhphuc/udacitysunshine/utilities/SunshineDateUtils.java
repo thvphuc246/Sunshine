@@ -81,7 +81,7 @@ public final class SunshineDateUtils {
      * Helper method to convert the database representation of the date into something to display
      * to users.  As classy and polished a user experience as "20140102" is, we can do better.
      * <p/>
-     * The day string for forecast uses the following logic:
+     * The day string for detail uses the following logic:
      * For today: "Today, June 8"
      * For tomorrow:  "Tomorrow"
      * For the next 5 days: "Wednesday" (just the day name)

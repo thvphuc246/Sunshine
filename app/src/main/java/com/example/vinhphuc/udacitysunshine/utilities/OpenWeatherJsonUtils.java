@@ -20,7 +20,7 @@ public final class OpenWeatherJsonUtils {
 
     /**
      * This method parses JSON from a web response and returns an array of Strings
-     * describing the weather over various days from the forecast.
+     * describing the weather over various days from the detail.
      * <p/>
      * Later on, we'll be parsing the JSON into structured data within the
      * getFullWeatherDataFromJson function, leveraging the data we have stored in the JSON. For
@@ -35,7 +35,7 @@ public final class OpenWeatherJsonUtils {
     public static String[] getSimpleWeatherStringsFromJson(Context context, String forecastJsonStr)
             throws JSONException {
 
-        /* Weather information. Each day's forecast info is an element of the "list" array */
+        /* Weather information. Each day's detail info is an element of the "list" array */
         final String OWM_LIST = "list";
 
         /* All temperatures are children of the "temp" object */
