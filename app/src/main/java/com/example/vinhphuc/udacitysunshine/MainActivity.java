@@ -5,7 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.example.vinhphuc.udacitysunshine.data.SunshinePreferences;
 import com.example.vinhphuc.udacitysunshine.utilities.NetworkUtils;
+import com.example.vinhphuc.udacitysunshine.utilities.OpenWeatherJsonUtils;
+
+import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,6 +21,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mWeatherTextView = (TextView) findViewById(R.id.tv_weather_data);
+
+        loadWeatherData();
+    }
+
+    private void loadWeatherData() {
+        String location = SunshinePreferences.getPreferredWeatherLocation(this);
+        new FetchWeatherTask().execute(location);
     }
 
     public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
@@ -35,7 +46,21 @@ public class MainActivity extends AppCompatActivity {
                         .getResponseFromHttpUrl(weatherRequestUrl);
 
                 String[] simpleJsonWeatherData = OpenWeatherJsonUtils
-                        .getSimpl
+                        .getSimpleWeatherStringsFromJson(MainActivity.this, jsonWeatherResponse);
+
+                return simpleJsonWeatherData;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String[] weatherData) {
+            if (weatherData != null) {
+                for (String weatherString : weatherData) {
+                    mWeatherTextView.append((weatherString) + "\n\n\n");
+                }
             }
         }
     }
