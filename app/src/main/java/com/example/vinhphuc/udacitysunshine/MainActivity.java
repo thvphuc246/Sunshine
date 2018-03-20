@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import com.example.vinhphuc.udacitysunshine.data.SunshinePreferences;
 import com.example.vinhphuc.udacitysunshine.data.WeatherContract;
+import com.example.vinhphuc.udacitysunshine.sync.SunshineSyncUtils;
 import com.example.vinhphuc.udacitysunshine.utilities.NetworkUtils;
 import com.example.vinhphuc.udacitysunshine.utilities.OpenWeatherJsonUtils;
 
@@ -77,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getSupportActionBar().setElevation(0f);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview_forecast);
 
@@ -97,6 +99,8 @@ public class MainActivity extends AppCompatActivity implements
         getSupportLoaderManager().initLoader(ID_FORECAST_LOADER, null, this);
 
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
+
+        SunshineSyncUtils.initialize(this);
     }
 
     /**
