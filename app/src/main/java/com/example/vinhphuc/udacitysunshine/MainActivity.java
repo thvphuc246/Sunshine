@@ -1,15 +1,10 @@
 package com.example.vinhphuc.udacitysunshine;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
-import android.support.v7.preference.PreferenceManager;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,13 +16,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.example.vinhphuc.udacitysunshine.data.SunshinePreferences;
 import com.example.vinhphuc.udacitysunshine.data.WeatherContract;
 import com.example.vinhphuc.udacitysunshine.sync.SunshineSyncUtils;
-import com.example.vinhphuc.udacitysunshine.utilities.NetworkUtils;
-import com.example.vinhphuc.udacitysunshine.utilities.OpenWeatherJsonUtils;
 
 import java.net.URL;
 
@@ -89,8 +81,6 @@ public class MainActivity extends AppCompatActivity implements
         mForecastAdapter = new ForecastAdapter(this, this);
         mRecyclerView.setAdapter(mForecastAdapter);
 
-        showLoading();
-
         /*
          * Ensures a loader is initialized and active. If the loader doesn't already exist, one is
          * created and (if the activity/fragment is currently started) starts the loader. Otherwise
@@ -99,6 +89,8 @@ public class MainActivity extends AppCompatActivity implements
         getSupportLoaderManager().initLoader(ID_FORECAST_LOADER, null, this);
 
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
+
+        showLoading();
 
         SunshineSyncUtils.initialize(this);
     }
@@ -155,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements
         mForecastAdapter.swapCursor(data);
         if (mPosition == RecyclerView.NO_POSITION) mPosition = 0;
         mRecyclerView.smoothScrollToPosition(mPosition);
-        if (data.getCount() != 0) showWeatherDataView();
+        if (data != null && data.getCount() != 0) showWeatherDataView();
     }
 
     /**
@@ -187,11 +179,26 @@ public class MainActivity extends AppCompatActivity implements
         startActivity(weatherDetailIntent);
     }
 
+    /**
+     * This method will make the View for the weather data visible and hide the error message and
+     * loading indicator.
+     */
     private void showWeatherDataView() {
-        /* First, make sure the error is invisible */
+        /* First, hide the loading indicator */
         mLoadingIndicator.setVisibility(View.INVISIBLE);
-        /* Then, make sure the weather data is visible */
+        /* Finally, make sure the weather data is visible */
         mRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * This method will make the loading indicator visible and hide the weather View and error
+     * message.
+     */
+    private void showLoading() {
+        /* Then, hide the weather data */
+        mRecyclerView.setVisibility(View.INVISIBLE);
+        /* Finally, show the loading indicator */
+        mLoadingIndicator.setVisibility(View.VISIBLE);
     }
 
     private void openLocationInMap() {
@@ -207,20 +214,6 @@ public class MainActivity extends AppCompatActivity implements
             Log.d(TAG, "Couldn't call " + geoLocation.toString()
                     + ", no receiving apps installed!");
         }
-    }
-
-    /**
-     * This method will make the loading indicator visible and hide the weather View and error
-     * message.
-     * <p>
-     * Since it is okay to redundantly set the visibility of a View, we don't need to check whether
-     * each view is currently visible or invisible.
-     */
-    private void showLoading() {
-        /* Then, hide the weather data */
-        mRecyclerView.setVisibility(View.INVISIBLE);
-        /* Finally, show the loading indicator */
-        mLoadingIndicator.setVisibility(View.VISIBLE);
     }
 
     @Override

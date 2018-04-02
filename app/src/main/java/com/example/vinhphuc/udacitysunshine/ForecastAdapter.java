@@ -2,9 +2,11 @@ package com.example.vinhphuc.udacitysunshine;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -123,7 +125,12 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
                 throw new IllegalArgumentException("Invalid view type, value of " + viewType);
         }
 
-        forecastAdapterViewHolder.iconView.setImageResource(weatherImageId);
+        try {
+            forecastAdapterViewHolder.iconView.setImageResource(weatherImageId);
+        } catch (Resources.NotFoundException e) {
+            Log.e("Resource Not Found Exception", e.toString());
+            e.printStackTrace();
+        }
 
         /****************
          * Weather Date *

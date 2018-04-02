@@ -335,7 +335,8 @@ public final class SunshineWeatherUtils {
         } else if (weatherId >= 802 && weatherId <= 804) {
             return R.drawable.ic_cloudy;
         }
-        return -1;
+        Log.e(LOG_TAG, "Unknown Weather: " + weatherId);
+        return R.drawable.ic_storm;
     }
 
     /**

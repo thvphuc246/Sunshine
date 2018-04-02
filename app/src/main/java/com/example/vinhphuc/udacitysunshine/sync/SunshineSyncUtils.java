@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
 import com.example.vinhphuc.udacitysunshine.data.WeatherContract;
@@ -114,7 +113,8 @@ public class SunshineSyncUtils {
                 }
 
                 /* Close the Cursor to avoid memory leaks! */
-                cursor.close();
+                if (cursor != null)
+                    cursor.close();
             }
         });
         checkForEmpty.start();

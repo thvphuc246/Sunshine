@@ -43,6 +43,20 @@ public class SunshinePreferences {
     }
 
     /**
+     * Resets the location coordinates stores in SharedPreferences.
+     *
+     * @param context Context used to get the SharedPreferences
+     */
+    public static void resetLocationCoordinates(Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sp.edit();
+
+        editor.remove(PREF_COORD_LAT);
+        editor.remove(PREF_COORD_LONG);
+        editor.apply();
+    }
+
+    /**
      * Returns the location currently set in Preferences. The default location this method
      * will return is "94043,USA", which is Mountain View, California. Mountain View is the
      * home of the headquarters of the Googleplex!
